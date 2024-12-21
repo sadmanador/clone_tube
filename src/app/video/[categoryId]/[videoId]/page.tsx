@@ -1,9 +1,14 @@
-import React from "react";
-import { useRouter } from "next/router";
+"use client";
+
+import PlayVideo from "@/components/PlayVideo/PlayVideo";
+import Recommended from "@/components/Recommended/Recommended";
+import { useParams } from "next/navigation";
 
 const Video = () => {
-  const router = useRouter();
-  const { videoId, categoryId } = router.query;
+  const router = useParams();
+  const { categoryId, videoId } = router;
+
+  console.log(categoryId, videoId);
 
   return (
     <div className="bg-[#f9f9f9] p-[20px_2%] flex justify-between flex-wrap md:px-[5%] lg:px-[5%]">

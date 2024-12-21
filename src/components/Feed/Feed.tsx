@@ -23,8 +23,7 @@ const Feed = () => {
     } else if (!res.items) {
       setError("No items found in the response.");
       setData(res.data.items);
-    } else {
-    }
+    } 
   };
 
   useEffect(() => {
