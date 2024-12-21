@@ -12,7 +12,7 @@ const Navbar = () => {
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      router.push(`/search/${searchQuery.trim()}`);
+      router.push(`/query/${searchQuery.trim()}`);
       setSearchQuery("");
     }
   };
