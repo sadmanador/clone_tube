@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { value_converter } from "@/utils/value_converter";
 import { getVideo } from "@/utils/apiService";
+import { useParams } from "next/navigation";
+import { VideoItem } from "@/types";
 
 
-const Recommended = ({ categoryId }: { categoryId: string }) => {
-  const [apiData, setApiData] = useState([]);
+
+const Recommended = () => {
+  const { categoryId } = useParams();
+  const [apiData, setApiData] = useState<VideoItem[]>([]);
   const [, setError] = useState<null | string>(null);
 
   const fetchData = async () => {
@@ -14,15 +18,15 @@ const Recommended = ({ categoryId }: { categoryId: string }) => {
     );
 
     console.log("API Response:", res);
+
     if (res.error) {
       setError(res.error.message);
-    } else if (!res.items) {
-      setError("No items found in the response.");
-      setApiData(res.data.items)
-    } 
+    } else if (res.data?.items) {
+      setApiData(res.data.items); // Ensure data.items is available
+    } else {
+      setError("No items found");
+    }
   };
-
-
 
   useEffect(() => {
     fetchData();
@@ -30,28 +34,33 @@ const Recommended = ({ categoryId }: { categoryId: string }) => {
 
   return (
     <div className="basis-[32%] flex flex-col w-full lg:basis-1/3">
-      {apiData?.map((item, index) => (
-        <Link
-          href={`/video/${item?.snippet.categoryId}/${item?.id}`}
-          key={index}
-          className="flex justify-between mb-2"
-        >
-          <img
-            src={item?.snippet.thumbnails.default.url}
-            alt={item.snippet.title}
-            className="w-1/2 object-cover"
-          />
-          <div className="flex-1 pl-2">
-            <h4 className="text-sm font-medium mb-1 line-clamp-2">
-              {item.snippet.title}
-            </h4>
-            <p className="text-gray-500 text-xs">{item.snippet.channelTitle}</p>
-            <p className="text-gray-500 text-xs">
-              {value_converter(item.statistics.viewCount)} Views
-            </p>
-          </div>
-        </Link>
-      ))}
+      {apiData?.map((item, index) => {
+        console.log(typeof item.statistics.viewCount);
+        return (
+          <Link
+            href={`/video/${item?.snippet.categoryId}/${item?.id}`}
+            key={index}
+            className="flex justify-between mb-2"
+          >
+            <img
+              src={item?.snippet.thumbnails.default.url}
+              alt={item.snippet.title}
+              className="w-1/2 object-cover"
+            />
+            <div className="flex-1 pl-2">
+              <h4 className="text-sm font-medium mb-1 line-clamp-2">
+                {item.snippet.title}
+              </h4>
+              <p className="text-gray-500 text-xs">
+                {item.snippet.channelTitle}
+              </p>
+              <p className="text-gray-500 text-xs">
+                {value_converter(item.statistics.viewCount)} Views
+              </p>
+            </div>
+          </Link>
+        );
+      })}
     </div>
   );
 };

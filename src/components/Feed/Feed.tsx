@@ -20,10 +20,11 @@ const Feed = () => {
     console.log("API Response:", res);
     if (res.error) {
       setError(res.error.message);
-    } else if (!res.items) {
-      setError("No items found in the response.");
+    } else if (res.data?.items) {
       setData(res.data.items);
-    } 
+    } else {
+      setError("No items found in the response.");
+    }
   };
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const Feed = () => {
             width={400}
             height={300}
             className="w-full rounded-md"
-            src={item?.snippet.thumbnails.medium.url}
+            src={item?.snippet.thumbnails.high.url}
             alt=""
           />
           <h2 className="text-lg font-semibold text-black my-1">

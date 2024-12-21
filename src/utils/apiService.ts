@@ -1,7 +1,8 @@
-import { ApiResponse, AxiosErrorType } from "@/types";
+import { ApiResponse, AxiosErrorType, VideoSearchResponse } from "@/types";
 import { AxiosRequestConfig } from "axios";
 import getInstance from "./axios";
 
+// Modify getRequest to return a VideoSearchResponse
 const getRequest = async <T>(
   url: string,
   config?: AxiosRequestConfig
@@ -27,14 +28,17 @@ const getRequest = async <T>(
   }
 };
 
-export const getVideo = async <T>(
+
+export const getVideo = async (
   endpoint: string
-): Promise<ApiResponse<T>> => {
+): Promise<ApiResponse<VideoSearchResponse>> => {
   const config: AxiosRequestConfig = {
     params: {
       key: process.env.NEXT_PUBLIC_API_KEY,
     },
   };
 
-  return await getRequest<T>(endpoint, config);
+  return await getRequest<VideoSearchResponse>(endpoint, config);
 };
+
+

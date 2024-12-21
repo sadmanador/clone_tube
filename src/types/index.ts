@@ -1,19 +1,20 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 
-export interface RequestError extends Error {
-  status?: number;
-  details?: unknown;
-}
-
 export interface ApiResponse<T> {
-  items?: T[]; 
-  data?: T;    
+  items?: T[];
+  data?: T;
   error?: {
     message: string;
     status?: number;
     details?: Record<string, unknown>;
     name?: string;
   };
+}
+
+export interface VideoStatistics {
+  viewCount: string;
+  likeCount: string;
+  commentCount: string;
 }
 
 export interface AxiosErrorType {
@@ -160,20 +161,101 @@ export interface SidebarContextProps {
   setCategory: (category: number) => void;
 }
 
-export interface VideoItem {
+export interface RecommendedVideo {
+  etag: string;
   id: string;
+  kind: string;
   snippet: {
     categoryId: string;
-    title: string;
+    channelId: string;
     channelTitle: string;
+    defaultAudioLanguage: string;
+    description: string;
+    liveBroadcastContent: string;
+    localized: {
+      title: string;
+      description: string;
+    };
+    publishedAt: string;
     thumbnails: {
+      default: {
+        url: string;
+        width: number;
+        height: number;
+      };
       medium: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      high: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      standard: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      maxres: {
+        url: string;
+        width: number;
+        height: number;
+      };
+    };
+    title: string;
+  };
+  statistics: {
+    commentCount: string;
+    favoriteCount: string;
+    likeCount: string;
+    viewCount: string;
+  };
+}
+
+export interface RecommendedVideoResponse {
+  items: RecommendedVideoResponse | undefined;
+  data: {
+    etag: string;
+    items: RecommendedVideo[];
+    kind: string;
+    nextPageToken: string;
+    pageInfo: {
+      totalResults: number;
+      resultsPerPage: number;
+    };
+  };
+}
+
+export interface VideoItem {
+  id: {
+    videoId: string;
+  };
+  snippet: {
+    title: string;
+    description: string;
+    channelTitle: string;
+    publishedAt: string;
+    thumbnails: {
+      high: {
+        url: string;
+      };
+      default: {
         url: string;
       };
     };
-    publishedAt: string;
+    categoryId: string; // Adding categoryId as it is used in the URL.
   };
   statistics: {
-    viewCount: number;
+    viewCount: string;
+    likeCount: string;
+    dislikeCount: string;
+    favoriteCount: string;
+    commentCount: string;
   };
+}
+
+export interface VideoSearchResponse {
+  items: VideoItem[];
 }

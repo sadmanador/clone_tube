@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { VideoItem } from "@/types";
 import { getVideo } from "@/utils/apiService";
 import Link from "next/link";
-import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const SearchResult = () => {
   const { query } = useParams();
   const [, setError] = useState<null | string>(null);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<VideoItem[]>([]);
 
   const fetchData = async () => {
     const res = await getVideo(
@@ -15,11 +15,14 @@ const SearchResult = () => {
     );
 
     console.log("API Response:", res);
+
+
     if (res.error) {
       setError(res.error.message);
-    } else if (!res.items) {
+    } else if (!res.data?.items) {
       setError("No items found in the response.");
-      setResults(res.data.items);
+    } else {
+      setResults(res.data.items); 
     }
   };
 
@@ -27,21 +30,19 @@ const SearchResult = () => {
     fetchData();
   }, [query]);
 
-  console.log('thumbnails',results[0])
+  console.log("thumbnails", results[0]);
 
   return (
     <div className="flex flex-col gap-4">
       {results.map((video) => (
-          <Link
+        <Link
           href={`/video/${video?.snippet.categoryId}/${video?.id.videoId}`}
           key={video.id.videoId}
           className="flex gap-4 justify-start pr-4"
-          >
-            
+        >
           <div>
             <img
               className="rounded-md"
-            
               style={{
                 width: "500px",
                 height: "281px",
