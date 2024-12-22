@@ -17,8 +17,6 @@ const Recommended = () => {
       `/videos?part=snippet,statistics&chart=mostPopular&regionCode=US&videoCategoryId=${categoryId}&maxResults=12`
     );
 
-    console.log("API Response:", res);
-
     if (res.error) {
       setError(res.error.message);
     } else if (res.data?.items) {
@@ -33,9 +31,8 @@ const Recommended = () => {
   }, [categoryId]);
 
   return (
-    <div className="basis-[32%] flex flex-col w-full lg:basis-1/3">
+    <div className=" flex flex-col w-full lg:basis-1/3">
       {apiData?.map((item, index) => {
-        console.log(typeof item.statistics.viewCount);
         return (
           <Link
             href={`/video/${item?.snippet.categoryId}/${item?.id}`}

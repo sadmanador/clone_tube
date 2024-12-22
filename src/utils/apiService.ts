@@ -2,7 +2,7 @@ import { ApiResponse, AxiosErrorType, VideoSearchResponse } from "@/types";
 import { AxiosRequestConfig } from "axios";
 import getInstance from "./axios";
 
-// Modify getRequest to return a VideoSearchResponse
+
 const getRequest = async <T>(
   url: string,
   config?: AxiosRequestConfig

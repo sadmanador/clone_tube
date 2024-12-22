@@ -8,11 +8,12 @@ import { useParams } from "next/navigation";
 const PlayVideo = () => {
   const router = useParams();
   const { videoId } = router;
-
   const [apiData, setApiData] = useState<VideoItem | null>(null);
   const [channelData, setChannelData] = useState<VideoItem | null>(null);
   const [commentData, setCommentData] = useState<VideoItem[]>([]);
   const [, setError] = useState<null | string>(null);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const toggleExpand = () => setIsExpanded(!isExpanded);
 
   const fetchVideoData = async () => {
     try {
@@ -32,7 +33,6 @@ const PlayVideo = () => {
       console.error(err);
     }
   };
-
 
   const fetchChannelData = async () => {
     const res = await getVideo(
@@ -68,10 +68,10 @@ const PlayVideo = () => {
     fetchChannelData();
   }, [apiData]);
 
-  console.log("Comment", commentData);
+
 
   return (
-    <div className="basis-2/3 flex flex-col space-y-4">
+    <div className="md:col-span-2 flex flex-col space-y-4 w-full min-w-72">
       <iframe
         src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
         className="w-full aspect-video"
@@ -129,7 +129,15 @@ const PlayVideo = () => {
 
       <div className="space-y-4">
         <p className="text-gray-700">
-          {apiData?.snippet.description.slice(0, 250)}
+          {isExpanded
+            ? apiData?.snippet.description
+            : `${apiData?.snippet.description.slice(0, 100)}...`}
+          <button
+            onClick={toggleExpand}
+            className="ml-2 text-gray-700 underline hover:no-underline"
+          >
+            {isExpanded ? "Show less" : "Show more"}
+          </button>
         </p>
         <hr className="border-gray-300" />
         <h4 className="text-gray-600 text-sm">
@@ -140,8 +148,7 @@ const PlayVideo = () => {
           <div key={index} className="flex space-x-4">
             <img
               src={
-                item.snippet?.topLevelComment?.snippet?.authorProfileImageUrl ||
-                "/assets/jack.png"
+                item.snippet?.topLevelComment?.snippet?.authorProfileImageUrl 
               }
               alt="author"
               className="w-9 h-9 rounded-full"
@@ -156,8 +163,11 @@ const PlayVideo = () => {
                   ).fromNow()}
                 </span>
               </h3>
-              <p className="text-gray-700 text-sm">
-                {item.snippet?.topLevelComment?.snippet?.textDisplay || ""}
+              <p className="text-gray-700 text-sm text-pretty break-all">
+                {item.snippet?.topLevelComment?.snippet?.textDisplay.slice(
+                  0,
+                  250
+                ) || ""}
               </p>
               <div className="flex space-x-4 mt-2 text-sm text-gray-600">
                 <span className="flex items-center">
