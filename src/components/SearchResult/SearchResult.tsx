@@ -1,8 +1,8 @@
 import { VideoItem } from "@/types";
 import { getVideo } from "@/utils/apiService";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import SearchCard from "../SearchCard/SearchCard";
 
 const SearchResult = () => {
   const { query } = useParams();
@@ -28,8 +28,8 @@ const SearchResult = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      {results.map((video) => (
-        <SearchCard video={video} key={video.id.videoId} />
+      {results.map((item) => (
+        <SearchCard item={item} key={item.id.videoId} />
       ))}
     </div>
   );
