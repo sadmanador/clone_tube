@@ -24,7 +24,7 @@
 }
 
 .subscribed-list img {
-  @apply w-6 rounded-full mr-5;
+  @apply w-6 rounded-full mr-3;
 }
 
 .small-sidebar {

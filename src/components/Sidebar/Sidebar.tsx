@@ -5,7 +5,6 @@ import Image from "next/image";
 const Sidebar = () => {
   const { sidebar, category, setCategory } = useContext(SidebarToggleContext);
 
-
   return (
     <div className={`sidebar ${sidebar ? "" : "small-sidebar"}`}>
       <div className="shortcut-links">
@@ -104,10 +103,24 @@ const Sidebar = () => {
             alt="PewDiePie"
           />
           <p>PewDiePie</p>
+          <Image
+            width={15}
+            height={15}
+            src="/assets/streaming.png"
+            className={`w-4 ${sidebar ? "" : "hidden"} ml-3`}
+            alt="PewDiePie"
+          />
         </div>
         <div className="side-link">
           <Image width={25} height={25} src="/assets/simon.png" alt="MrBeast" />
           <p>MrBeast</p>
+          <Image
+            width={15}
+            height={15}
+            src="/assets/streaming.png"
+            className={`w-4 ${sidebar ? "" : "hidden"} ml-3`}
+            alt="PewDiePie"
+          />
         </div>
         <div className="side-link">
           <Image
@@ -117,6 +130,13 @@ const Sidebar = () => {
             alt="Justin Bieber"
           />
           <p>Justin Bieber</p>
+          <Image
+            width={15}
+            height={15}
+            src="/assets/streaming.png"
+            className={`w-4 ${sidebar ? "" : "hidden"} ml-3`}
+            alt="PewDiePie"
+          />
         </div>
         <div className="side-link">
           <Image
@@ -125,7 +145,14 @@ const Sidebar = () => {
             src="/assets/megan.png"
             alt="5-Minute Crafts"
           />
-          <p>5-Minute Crafts</p>
+          <p>Radbrad</p>
+          <Image
+            width={15}
+            height={15}
+            src="/assets/streaming.png"
+            className={`w-4 ${sidebar ? "" : "hidden"} ml-3`}
+            alt="PewDiePie"
+          />
         </div>
         <div className="side-link">
           <Image
@@ -135,6 +162,13 @@ const Sidebar = () => {
             alt="Nas Daily"
           />
           <p>Nas Daily</p>
+          <Image
+            width={15}
+            height={15}
+            src="/assets/streaming.png"
+            className={`w-4 ${sidebar ? "" : "hidden"} ml-3`}
+            alt="PewDiePie"
+          />
         </div>
       </div>
     </div>

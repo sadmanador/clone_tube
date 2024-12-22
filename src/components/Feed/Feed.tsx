@@ -31,7 +31,7 @@ const Feed = () => {
   }, [category]);
 
   
-
+console.log("home", data)
 
 
   return (
