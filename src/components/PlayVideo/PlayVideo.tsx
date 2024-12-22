@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-
+import { VideoItem } from "@/types";
 import { getVideo } from "@/utils/apiService";
 import { value_converter } from "@/utils/value_converter";
 import { useParams } from "next/navigation";
@@ -9,22 +9,30 @@ const PlayVideo = () => {
   const router = useParams();
   const { videoId } = router;
 
-  const [apiData, setApiData] = useState(null);
-  const [channelData, setChannelData] = useState(null);
-  const [commentData, setCommentData] = useState(null);
+  const [apiData, setApiData] = useState<VideoItem | null>(null);
+  const [channelData, setChannelData] = useState<VideoItem | null>(null);
+  const [commentData, setCommentData] = useState<VideoItem[]>([]);
   const [, setError] = useState<null | string>(null);
 
   const fetchVideoData = async () => {
-    const res = await getVideo(
-      `/videos?part=snippet,statistics,contentDetails&id=${videoId}`
-    );
-    if (res.error) {
-      setError(res.error.message);
-    } else if (!res.items) {
-      setError("No items found in the response.");
-      setApiData(res.data.items?.[0]);
+    try {
+      const res = await getVideo(
+        `/videos?part=snippet,statistics,contentDetails&id=${videoId}`
+      );
+      if (res.error) {
+        setError(res.error.message);
+      } else if (res.data?.items && res.data.items.length > 0) {
+        setApiData(res.data.items[0]);
+      } else {
+        setError("No items found in the response.");
+        setApiData(null);
+      }
+    } catch (err) {
+      setError("An unexpected error occurred.");
+      console.error(err);
     }
   };
+
 
   const fetchChannelData = async () => {
     const res = await getVideo(
@@ -32,21 +40,23 @@ const PlayVideo = () => {
     );
     if (res.error) {
       setError(res.error.message);
-    } else if (!res.items) {
+    } else if (res.data?.items && res.data.items.length > 0) {
+      setChannelData(res.data.items[0]);
+    } else {
       setError("No items found in the response.");
-      setChannelData(res.data.items?.[0]);
+      setChannelData(null);
     }
 
     const commentResponse = await getVideo(
       `/commentThreads?part=snippet,replies&maxResults=50&videoId=${videoId}`
     );
 
-    console.log("comment",commentResponse)
-    if (res.error) {
-      setError(res.error.message);
-    } else if (!res.items) {
-      setError("No items found in the response.");
+    if (commentResponse.error) {
+      setError(commentResponse.error.message);
+    } else if (commentResponse.data?.items) {
       setCommentData(commentResponse.data.items);
+    } else {
+      setError("No comments found.");
     }
   };
 
@@ -58,7 +68,7 @@ const PlayVideo = () => {
     fetchChannelData();
   }, [apiData]);
 
-  console.log(commentData)
+  console.log("Comment", commentData);
 
   return (
     <div className="basis-2/3 flex flex-col space-y-4">
@@ -74,13 +84,13 @@ const PlayVideo = () => {
 
       <div className="flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
         <p>
-          {value_converter(apiData?.statistics.viewCount)} Views •{" "}
+          {value_converter(apiData?.statistics.viewCount || "0")} Views •{" "}
           {moment(apiData?.snippet.publishedAt).fromNow()}
         </p>
         <div className="flex space-x-6">
           <span className="flex items-center">
             <img src={"/assets/like.png"} alt="like" className="w-5 mr-2" />
-            {value_converter(apiData?.statistics.likeCount)}
+            {value_converter(apiData?.statistics.likeCount || "0")}
           </span>
           <span className="flex items-center">
             <img src={"/assets/dislike.png"} alt="" className="w-5 mr-2" />
@@ -108,7 +118,7 @@ const PlayVideo = () => {
         <div className="flex-1">
           <p className="text-lg font-medium">{apiData?.snippet.channelTitle}</p>
           <span className="text-gray-500 text-sm">
-            {value_converter(channelData?.statistics.subscriberCount)}{" "}
+            {value_converter(channelData?.statistics.subscriberCount || "0")}{" "}
             Subscribers
           </span>
         </div>
@@ -123,14 +133,14 @@ const PlayVideo = () => {
         </p>
         <hr className="border-gray-300" />
         <h4 className="text-gray-600 text-sm">
-          {value_converter(apiData?.statistics.commentCount)} Comments
+          {value_converter(apiData?.statistics.commentCount || "0")} Comments
         </h4>
 
         {commentData?.map((item, index) => (
           <div key={index} className="flex space-x-4">
             <img
               src={
-                item.snippet.topLevelComment.snippet.authorProfileImageUrl ||
+                item.snippet?.topLevelComment?.snippet?.authorProfileImageUrl ||
                 "/assets/jack.png"
               }
               alt="author"
@@ -138,24 +148,33 @@ const PlayVideo = () => {
             />
             <div>
               <h3 className="text-sm font-medium">
-                {item.snippet.topLevelComment.snippet.authorDisplayName}{" "}
+                {item.snippet?.topLevelComment?.snippet?.authorDisplayName ||
+                  "Unknown"}{" "}
                 <span className="text-gray-500 text-xs font-light">
                   {moment(
-                    item.snippet.topLevelComment.snippet.updatedAt
+                    item.snippet?.topLevelComment?.snippet?.updatedAt
                   ).fromNow()}
                 </span>
               </h3>
               <p className="text-gray-700 text-sm">
-                {item.snippet.topLevelComment.snippet.textDisplay}
+                {item.snippet?.topLevelComment?.snippet?.textDisplay || ""}
               </p>
               <div className="flex space-x-4 mt-2 text-sm text-gray-600">
                 <span className="flex items-center">
-                  <img src={'/assets/like.png'} alt="like" className="w-4 mr-1" />
+                  <img
+                    src={"/assets/like.png"}
+                    alt="like"
+                    className="w-4 mr-1"
+                  />
                   {value_converter(
-                    item.snippet.topLevelComment.snippet.likeCount
+                    item.snippet?.topLevelComment?.snippet?.likeCount || "0"
                   )}
                 </span>
-                <img src={'/assets/dislike.png'} alt="dislike" className="w-4" />
+                <img
+                  src={"/assets/dislike.png"}
+                  alt="dislike"
+                  className="w-4"
+                />
               </div>
             </div>
           </div>

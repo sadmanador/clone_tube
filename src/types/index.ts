@@ -11,12 +11,6 @@ export interface ApiResponse<T> {
   };
 }
 
-export interface VideoStatistics {
-  viewCount: string;
-  likeCount: string;
-  commentCount: string;
-}
-
 export interface AxiosErrorType {
   code?: string;
   config: AxiosRequestConfig;
@@ -58,10 +52,10 @@ export interface VideoDetails {
 }
 
 export interface VideoContentDetails {
-  duration: string; // e.g., PT2M20S
-  dimension: string; // e.g., "2d"
-  definition: string; // e.g., "hd"
-  caption: string; // e.g., "true"
+  duration: string; 
+  dimension: string;
+  definition: string; 
+  caption: string; 
   licensedContent: boolean;
 }
 
@@ -228,14 +222,43 @@ export interface RecommendedVideoResponse {
   };
 }
 
+export interface CommentSnippet {
+  authorChannelId: {
+    value: string;
+  };
+  authorChannelUrl: string;
+  authorDisplayName: string;
+  authorProfileImageUrl: string;
+  canRate: boolean;
+  channelId: string;
+  likeCount: number;
+  publishedAt: string; 
+  textDisplay: string; 
+  textOriginal: string; 
+  updatedAt: string; 
+  videoId: string;
+  viewerRating: string; 
+}
+
+export interface TopLevelComment {
+  etag: string;
+  id: string;
+  kind: string;
+  snippet: CommentSnippet;
+}
+
+
+
 export interface VideoItem {
   id: {
     videoId: string;
   };
   snippet: {
+    topLevelComment: TopLevelComment;
     title: string;
     description: string;
     channelTitle: string;
+    channelId: string;
     publishedAt: string;
     thumbnails: {
       high: {
@@ -253,6 +276,7 @@ export interface VideoItem {
     dislikeCount: string;
     favoriteCount: string;
     commentCount: string;
+    subscriberCount: string;
   };
 }
 
