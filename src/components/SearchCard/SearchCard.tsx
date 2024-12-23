@@ -26,24 +26,24 @@ const SearchCard: React.FC<VideoCardProps> = ({ item }) => {
     fetchChannelData();
   }, [item]);
 
+  console.log(item.snippet);
+
   return (
     <Link
       href={`/video/${item?.snippet.categoryId}/${item?.id.videoId}`}
       key={item.id.videoId}
       className="md:flex gap-4 justify-center md:justify-start md:pr-4 px-[10%]"
     >
-      <div>
-        <img
-          className="rounded-md"
-          style={{
-            width: "500px",
-            height: "281px",
-          }}
+      <div className="basis-1/3">
+        <Image
+          width={item.snippet.thumbnails.high.width}
+          height={item.snippet.thumbnails.high.height}
           src={item.snippet.thumbnails.high.url}
           alt={item.snippet.title}
+          className="rounded-md"
         />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col basis-2/3">
         <h3 className="text-lg font-medium">{item.snippet.title}</h3>
 
         <div className="flex gap-2">
@@ -60,7 +60,9 @@ const SearchCard: React.FC<VideoCardProps> = ({ item }) => {
             />
           </div>
           <div>
-            <p className="text-sm text-gray-600 font-semibold">{item.snippet.channelTitle}</p>
+            <p className="text-sm text-gray-600 font-semibold">
+              {item.snippet.channelTitle}
+            </p>
             <p className="text-sm text-gray-500">{item.snippet.description}</p>
           </div>
         </div>

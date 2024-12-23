@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const Navbar = () => {
-  const { sidebar, setSidebar } = useContext(SidebarToggleContext);
+  const { theme, sidebar, setSidebar } = useContext(SidebarToggleContext);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
@@ -24,7 +24,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center py-2 px-4 shadow-md bg-white sticky top-0 z-10">
+    <nav
+      className={`flex justify-between items-center py-2 px-4 shadow-md sticky top-0 z-10 ${
+        theme === "light" ? "bg-[#f9f9f9]" : "bg-black"
+      }`}
+    >
       <div className="flex items-center">
         <Image
           width={22}
@@ -56,7 +60,7 @@ const Navbar = () => {
             className="w-full bg-transparent border-none outline-none"
           />
           <div
-            className="hover:bg-gray-200 p-2 rounded-full cursor-pointer active:bg-gray-300"
+            className="hover:bg-base-200 p-2 rounded-full cursor-pointer active:bg-base-300"
             onClick={handleSearch}
           >
             <Image

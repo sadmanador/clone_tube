@@ -1,6 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 
-
 export interface ApiResponse<T> {
   items?: T[];
   data?: T;
@@ -61,6 +60,8 @@ export interface VideoItem {
     publishedAt: string;
     thumbnails: {
       high: {
+        height: number;
+        width: number;
         url: string;
       };
       default: {
@@ -88,10 +89,10 @@ export interface SidebarContextProps {
   setSidebar: (sidebar: boolean) => void;
   category: number;
   setCategory: (category: number) => void;
+  theme: string;
+  setTheme: (theme: string) => void;
 }
 
 export interface VideoCardProps {
   item: VideoItem;
 }
-
-

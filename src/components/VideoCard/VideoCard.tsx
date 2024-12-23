@@ -48,7 +48,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
           />
         </div>
         <div>
-          <h2 className="text-md font-semibold text-black my-1">
+          <h2 className="text-md font-semibold my-1">
             {item.snippet.title}
           </h2>
           <h3 className="text-sm font-semibold text-gray-600 my-1">

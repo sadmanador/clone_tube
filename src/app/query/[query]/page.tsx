@@ -13,7 +13,7 @@ const QueryPage = () => {
       <div
         className={`${
           sidebar ? "md:pl-[17%]" : "md:pl-[7%]"
-        } bg-[#f9f9f9] pt-5 pb-5 px-[3%] ${sidebar ? "" : "lg:pl-20"}`}
+        }  pt-5 pb-5 px-[3%] ${sidebar ? "" : "lg:pl-20"}`}
       >
         <SearchResult />
       </div>

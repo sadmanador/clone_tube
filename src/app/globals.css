@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .sidebar {
-  @apply hidden md:block bg-white fixed top-0 h-screen pt-20 pl-[2%];
+  @apply hidden md:block fixed top-0 h-screen pt-20 pl-[2%];
   width: 15%;
 }
 
@@ -16,11 +16,11 @@
 }
 
 .side-menu {
-  @apply hover:bg-gray-300 rounded-lg py-1 w-full pl-2;
+  @apply hover:bg-base-300 rounded-lg py-1 w-full pl-2;
 }
 
 .sidebar hr {
-  @apply border-0 h-px bg-gray-300 w-[85%];
+  @apply border-0 h-px bg-base-300 w-[85%];
 }
 
 .subscribed-list h3 {

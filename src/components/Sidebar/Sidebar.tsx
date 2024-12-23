@@ -1,10 +1,18 @@
 import { SidebarToggleContext } from "@/context/SidebarContext/SidebarContext";
-import React, { useContext } from "react";
-import Image from "next/image";
 import { MenuItems, Subscriptions } from "@/utils/sidebar_options";
+import Image from "next/image";
+import { useContext } from "react";
 
 const Sidebar = () => {
-  const { sidebar, category, setCategory } = useContext(SidebarToggleContext);
+  const { theme, setTheme, sidebar, category, setCategory } =
+    useContext(SidebarToggleContext);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "black" : "light";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
 
   return (
     <div className={`sidebar ${sidebar ? "" : "small-sidebar"}`}>
@@ -12,7 +20,9 @@ const Sidebar = () => {
         {MenuItems.map((item) => (
           <div
             key={item.id}
-            className={`side-link side-menu ${category === item.id ? "active" : ""}`}
+            className={`side-link side-menu ${
+              category === item.id ? "active" : ""
+            }`}
             onClick={() => setCategory(item.id)}
           >
             <Image width={25} height={25} src={item.icon} alt={item.label} />
@@ -37,6 +47,16 @@ const Sidebar = () => {
             />
           </div>
         ))}
+        <div onClick={toggleTheme} className="flex flex-row items-center side-link">
+          <input
+            type="checkbox"
+            className="toggle toggle-xs mr-2"
+            defaultChecked
+          />
+          <p>
+            {theme === "light" ? "🌙 Switch to Dark" : "☀️ Switch to Light"}
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ const Video = () => {
   const { categoryId, videoId } = useParams();
 
   return (
-    <div className="bg-[#f9f9f9] p-[20px_2%]  grid lg:grid-cols-3 gap-3 md:px-[5%] lg:px-[5%] ">
+    <div className=" p-[20px_2%]  grid lg:grid-cols-3 gap-3 md:px-[5%] lg:px-[5%] ">
       {videoId && <PlayVideo />}
       {categoryId && <Recommended />}
     </div>
