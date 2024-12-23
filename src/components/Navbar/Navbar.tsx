@@ -35,7 +35,7 @@ const Navbar = () => {
           height={22}
           src="/assets/menu.png"
           alt="Menu"
-          className="w-5 mr-6 cursor-pointer"
+          className="w-5 mr-6 cursor-pointer hidden md:block"
           onClick={() => setSidebar(!sidebar)}
         />
         <Link href="/">
@@ -44,7 +44,14 @@ const Navbar = () => {
             height={31}
             src="/assets/logo.png"
             alt="Logo"
-            className="w-32"
+            className="w-32 hidden md:block"
+          />
+          <Image
+            width={8}
+            height={8}
+            src="/assets/logo-small.png"
+            alt="Logo"
+            className="w-10 mr-4 md:hidden"
           />
         </Link>
       </div>
@@ -80,28 +87,28 @@ const Navbar = () => {
           height={24}
           src="/assets/upload.png"
           alt="Upload"
-          className="w-6 ml-6 cursor-pointer"
+          className="w-6 ml-1 md:ml-6 cursor-pointer hidden md:block"
         />
         <Image
           width={24}
           height={24}
           src="/assets/more.png"
           alt="More"
-          className="w-6 ml-6 cursor-pointer"
+          className="w-6 ml-1 md:ml-6 cursor-pointer hidden md:block"
         />
         <Image
           width={24}
           height={24}
           src="/assets/notification.png"
           alt="Notification"
-          className="w-6 ml-6 cursor-pointer"
+          className="w-6 ml-1 md:ml-6 cursor-pointer hidden md:block"
         />
         <Image
           width={32}
           height={32}
           src="/assets/jack.png"
           alt="Profile"
-          className="w-8 h-8 rounded-full ml-6 cursor-pointer"
+          className="w-8 h-8 rounded-full ml-1 md:ml-6 cursor-pointer"
         />
       </div>
     </nav>
