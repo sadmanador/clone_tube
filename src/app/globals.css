@@ -12,7 +12,11 @@
 }
 
 .side-link {
-  @apply flex items-center mb-5 cursor-pointer w-fit flex-wrap;
+  @apply flex items-center mb-3 cursor-pointer w-fit flex-wrap;
+}
+
+.side-menu {
+  @apply hover:bg-gray-300 rounded-lg py-1 w-full pl-2;
 }
 
 .sidebar hr {
@@ -46,5 +50,3 @@
 .side-link.active img {
   @apply pb-0.5 border-b-4 border-red-500;
 }
-
-
