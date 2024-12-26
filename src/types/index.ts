@@ -78,6 +78,17 @@ export interface VideoItem {
     commentCount: string;
     subscriberCount: string;
   };
+  contentDetails: {
+    duration: string;
+    dimension: string;
+    definition: string;
+    caption: string;
+    licensedContent: boolean;
+    regionRestriction?: {
+      allowed?: string[];
+      blocked?: string[];
+    };
+  };
 }
 
 export interface VideoSearchResponse {

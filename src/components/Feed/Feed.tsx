@@ -13,7 +13,7 @@ const Feed = () => {
 
   const fetchData = async () => {
     const res = await getVideo(
-      `/videos?part=snippet,statistics&chart=mostPopular&maxResults=72&videoCategoryId=${category}`
+      `/videos?part=snippet,contentDetails,statistics&chart=mostPopular&maxResults=72&videoCategoryId=${category}`
     );
     if (res.error) {
       setError(res.error.message);
