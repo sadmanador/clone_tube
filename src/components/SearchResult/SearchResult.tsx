@@ -26,6 +26,8 @@ const SearchResult = () => {
     fetchData();
   }, [query]);
 
+  console.log("search",results)
+
   return (
     <div className="flex flex-col gap-4">
       {results.map((item) => (

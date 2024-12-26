@@ -12,8 +12,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
   const [channelData, setChannelData] = useState<VideoItem | null>(null);
   const [, setError] = useState<null | string>(null);
 
-  console.log(item.contentDetails.duration);
-
   const fetchChannelData = async () => {
     const res = await getVideo(
       `/channels?part=snippet,statistics,contentDetails&id=${item?.snippet.channelId}`
@@ -55,8 +53,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
             alt="channel Icon"
             src={channelData?.snippet.thumbnails?.default.url}
           />
-
-          {/*  channelData?.snippet.thumbnails?.default.url */}
         </div>
         <div>
           <h2 className="text-md font-semibold my-1">{item.snippet.title}</h2>

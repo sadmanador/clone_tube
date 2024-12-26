@@ -1,5 +1,6 @@
 import { VideoCardProps, VideoItem } from "@/types";
 import { getVideo } from "@/utils/apiService";
+import { Avatar } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -26,11 +27,11 @@ const SearchCard: React.FC<VideoCardProps> = ({ item }) => {
     fetchChannelData();
   }, [item]);
 
-  console.log(item.snippet);
+  console.log(item);
 
   return (
     <Link
-      href={`/video/${item?.snippet.categoryId}/${item?.id.videoId}`}
+      href={`/video/${item?.snippet.categoryId || '24'}/${item?.id.videoId}`}
       key={item.id.videoId}
       className="md:flex gap-4 justify-center md:justify-start md:pr-4 px-[10%]"
     >
@@ -48,15 +49,9 @@ const SearchCard: React.FC<VideoCardProps> = ({ item }) => {
 
         <div className="flex gap-2">
           <div>
-            <Image
-              width={42}
-              height={42}
-              src={
-                channelData?.snippet.thumbnails?.default.url ||
-                "/assets/jack.png"
-              }
-              alt="author"
-              className="rounded-full w-auto h-9"
+            <Avatar
+              alt="channel Icon"
+              src={channelData?.snippet.thumbnails?.default.url}
             />
           </div>
           <div>
