@@ -2,6 +2,7 @@ import { VideoCardProps, VideoItem } from "@/types";
 import { getVideo } from "@/utils/apiService";
 import { parseYouTubeDuration } from "@/utils/duration_converter";
 import { value_converter } from "@/utils/value_converter";
+import { Avatar } from "@mui/material";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
@@ -50,15 +51,12 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
       </div>
       <div className="flex gap-2 p-2">
         <div>
-          <Image
-            width={32}
-            height={32}
-            src={
-              channelData?.snippet.thumbnails?.default.url || "/assets/jack.png"
-            }
-            alt="author"
-            className="rounded-full w-auto h-9"
+          <Avatar
+            alt="channel Icon"
+            src={channelData?.snippet.thumbnails?.default.url}
           />
+
+          {/*  channelData?.snippet.thumbnails?.default.url */}
         </div>
         <div>
           <h2 className="text-md font-semibold my-1">{item.snippet.title}</h2>

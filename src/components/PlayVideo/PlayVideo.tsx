@@ -4,6 +4,7 @@ import { VideoItem } from "@/types";
 import { getVideo } from "@/utils/apiService";
 import { value_converter } from "@/utils/value_converter";
 import { useParams } from "next/navigation";
+import { Avatar } from "@mui/material";
 
 const PlayVideo = () => {
   const router = useParams();
@@ -67,8 +68,6 @@ const PlayVideo = () => {
   useEffect(() => {
     fetchChannelData();
   }, [apiData]);
-
-
 
   return (
     <div className="md:col-span-2 flex flex-col space-y-4 w-full min-w-72">
@@ -146,12 +145,11 @@ const PlayVideo = () => {
 
         {commentData?.map((item, index) => (
           <div key={index} className="flex space-x-4">
-            <img
+            <Avatar
+              alt="channel Icon"
               src={
-                item.snippet?.topLevelComment?.snippet?.authorProfileImageUrl 
+                item.snippet?.topLevelComment?.snippet?.authorProfileImageUrl
               }
-              alt="author"
-              className="w-9 h-9 rounded-full"
             />
             <div>
               <h3 className="text-sm font-medium">
