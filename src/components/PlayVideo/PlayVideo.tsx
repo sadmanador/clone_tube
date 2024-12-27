@@ -16,6 +16,8 @@ const PlayVideo = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
+  console.log(channelData);
+
   const fetchVideoData = async () => {
     try {
       const res = await getVideo(

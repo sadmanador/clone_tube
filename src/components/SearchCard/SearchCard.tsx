@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 
 const SearchCard: React.FC<VideoCardProps> = ({ item }) => {
   const [channelData, setChannelData] = useState<VideoItem | null>(null);
+  const [categoryId, setCategoryId] = useState<string>("0");
+
   const [, setError] = useState<null | string>(null);
 
   const fetchChannelData = async () => {
@@ -23,15 +25,25 @@ const SearchCard: React.FC<VideoCardProps> = ({ item }) => {
     }
   };
 
+  const fetchCategoryId = async () => {
+    const res = await getVideo(`/videos?part=snippet&id=${item.id.videoId}`);
+    if (res.error) {
+      setError(res.error.message);
+    } else if (res.data?.items && res.data.items.length > 0) {
+      setCategoryId(res.data.items[0]?.snippet?.categoryId || "24"); // Fallback to '24'
+    }
+  };
+
   useEffect(() => {
     fetchChannelData();
+    fetchCategoryId();
   }, [item]);
 
   console.log(item);
 
   return (
     <Link
-      href={`/video/${item?.snippet.categoryId || '24'}/${item?.id.videoId}`}
+      href={`/video/${categoryId}/${item?.id.videoId}`}
       key={item.id.videoId}
       className="md:flex gap-4 justify-center md:justify-start md:pr-4 px-[10%]"
     >
