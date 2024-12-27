@@ -8,7 +8,7 @@ import { useContext } from "react";
 export default function Home() {
   const { sidebar } = useContext(SidebarToggleContext);
 
-  console.log(process.env.NEXT_PUBLIC_BASE_URL,process.env.NEXT_PUBLIC_API_KEY,)
+
 
   return (
     <>

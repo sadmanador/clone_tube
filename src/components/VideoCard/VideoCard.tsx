@@ -10,30 +10,51 @@ import React, { useEffect, useState } from "react";
 
 const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
   const [channelData, setChannelData] = useState<VideoItem | null>(null);
+  const [videoDetails, setVideoDetails] = useState<null | {
+    duration: string;
+    viewCount: string;
+  }>(null);
   const [, setError] = useState<null | string>(null);
 
   const fetchChannelData = async () => {
     const res = await getVideo(
-      `/channels?part=snippet,statistics,contentDetails&id=${item?.snippet.channelId}`
+      `/channels?part=snippet,contentDetails&id=${item?.snippet.channelId}`
     );
-    if (res.error) {
-      setError(res.error.message);
-    } else if (res.data?.items && res.data.items.length > 0) {
+
+    if (res?.data?.items && res.data.items.length > 0) {
       setChannelData(res.data.items[0]);
     } else {
-      setError("No items found in the response.");
-      setChannelData(null);
+      setError("No channel data found.");
+    }
+  };
+
+  const fetchVideoDetails = async () => {
+    const res = await getVideo(
+      `/videos?part=contentDetails,statistics&id=${item?.contentDetails.videoId}`
+    );
+
+    if (res?.data?.items && res.data.items.length > 0) {
+      const video = res.data.items[0];
+      setVideoDetails({
+        duration: video.contentDetails.duration,
+        viewCount: video.statistics.viewCount,
+      });
+    } else {
+      setError("No video details found.");
     }
   };
 
   useEffect(() => {
     fetchChannelData();
+    fetchVideoDetails();
   }, [item]);
+
+  console.log(item)
 
   return (
     <Link
-      href={`video/${item.snippet.categoryId}/${item.id}`}
-      className="card "
+      href={`video/${item.snippet.categoryId}/${item.contentDetails.videoId || item.id}`}
+      className="card"
     >
       <div className="relative">
         <Image
@@ -41,10 +62,12 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
           height={300}
           className="w-full rounded-md"
           src={item?.snippet.thumbnails.high.url}
-          alt=""
+          alt={item.snippet.title}
         />
         <p className="text-gray-400 font-semibold absolute right-2 bottom-[6px]">
-          {parseYouTubeDuration(item.contentDetails?.duration)}
+          {videoDetails?.duration
+            ? parseYouTubeDuration(videoDetails.duration)
+            : ""}
         </p>
       </div>
       <div className="flex gap-2 p-2">
@@ -60,7 +83,9 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
             {item.snippet.channelTitle}
           </h3>
           <p className="text-sm">
-            {value_converter(item.statistics.viewCount)} views &bull;
+            {videoDetails?.viewCount
+              ? `${value_converter(videoDetails.viewCount)} views •`
+              : ""}
             {moment(item.snippet.publishedAt).fromNow()}
           </p>
         </div>

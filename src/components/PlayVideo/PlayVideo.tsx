@@ -5,6 +5,7 @@ import { getVideo } from "@/utils/apiService";
 import { value_converter } from "@/utils/value_converter";
 import { useParams } from "next/navigation";
 import { Avatar } from "@mui/material";
+import Link from "next/link";
 
 const PlayVideo = () => {
   const router = useParams();
@@ -16,24 +17,17 @@ const PlayVideo = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
-  console.log(channelData);
-
   const fetchVideoData = async () => {
-    try {
-      const res = await getVideo(
-        `/videos?part=snippet,statistics,contentDetails&id=${videoId}`
-      );
-      if (res.error) {
-        setError(res.error.message);
-      } else if (res.data?.items && res.data.items.length > 0) {
-        setApiData(res.data.items[0]);
-      } else {
-        setError("No items found in the response.");
-        setApiData(null);
-      }
-    } catch (err) {
-      setError("An unexpected error occurred.");
-      console.error(err);
+    const res = await getVideo(
+      `/videos?part=snippet,statistics,contentDetails&id=${videoId}`
+    );
+    if (res.error) {
+      setError(res.error.message);
+    } else if (res.data?.items && res.data.items.length > 0) {
+      setApiData(res.data.items[0]);
+    } else {
+      setError("No items found in the response.");
+      setApiData(null);
     }
   };
 
@@ -70,6 +64,8 @@ const PlayVideo = () => {
   useEffect(() => {
     fetchChannelData();
   }, [apiData]);
+
+
 
   return (
     <div className="md:col-span-2 flex flex-col space-y-4 w-full min-w-72">
@@ -117,9 +113,14 @@ const PlayVideo = () => {
           className="w-10 h-10 rounded-full"
         />
         <div className="flex-1">
-          <p className="text-lg font-medium">{apiData?.snippet.channelTitle}</p>
-          <span className="text-gray-500 text-sm">
-            {value_converter(channelData?.statistics.subscriberCount || "0")}{" "}
+          <Link
+            href={`/channel/${apiData?.snippet.channelId}`}
+            className="text-lg font-medium"
+          >
+            {apiData?.snippet.channelTitle}
+          </Link>
+          <span className="text-gray-500 text-sm mr-2">
+            {value_converter(channelData?.statistics.subscriberCount || "0")}
             Subscribers
           </span>
         </div>

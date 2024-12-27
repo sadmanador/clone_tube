@@ -48,6 +48,31 @@ export interface TopLevelComment {
 }
 
 export interface VideoItem {
+  items: [
+    {
+      contentDetails: {
+        relatedPlaylists: { [key: string]: string };
+      };
+      etag: string;
+      id: string;
+      kind: string;
+      snippet: {
+        customUrl: string;
+        description: string;
+        localized: {
+          title: string;
+          description: string;
+        };
+        publishedAt: string;
+        thumbnails: {
+          default: { url: string; width: number; height: number };
+          medium: { url: string; width: number; height: number };
+          high: { url: string; width: number; height: number };
+        };
+        title: string;
+      };
+    }
+  ];
   id: {
     videoId: string;
   };
@@ -78,7 +103,13 @@ export interface VideoItem {
     commentCount: string;
     subscriberCount: string;
   };
+
   contentDetails: {
+    relatedPlaylists?: {
+      likes?: string;
+      uploads: string;
+    };
+    videoId: string;
     duration: string;
     dimension: string;
     definition: string;
@@ -87,6 +118,17 @@ export interface VideoItem {
     regionRestriction?: {
       allowed?: string[];
       blocked?: string[];
+    };
+  };
+  brandingSettings?: {
+    channel?: {
+      title?: string;
+      description?: string;
+      keywords?: string;
+      unsubscribedTrailer?: string;
+    };
+    image?: {
+      bannerExternalUrl?: string;
     };
   };
 }

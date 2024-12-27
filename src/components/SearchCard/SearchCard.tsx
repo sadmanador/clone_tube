@@ -39,7 +39,7 @@ const SearchCard: React.FC<VideoCardProps> = ({ item }) => {
     fetchCategoryId();
   }, [item]);
 
-  console.log(item);
+
 
   return (
     <Link

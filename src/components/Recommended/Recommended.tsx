@@ -4,7 +4,7 @@ import { value_converter } from "@/utils/value_converter";
 import { getVideo } from "@/utils/apiService";
 import { useParams } from "next/navigation";
 import { VideoItem } from "@/types";
-
+import moment from "moment";
 
 
 const Recommended = () => {
@@ -42,17 +42,21 @@ const Recommended = () => {
             <img
               src={item?.snippet.thumbnails.default.url}
               alt={item.snippet.title}
-              className="w-1/2 object-cover"
+              className="w-[168px] h-[94px] object-cover rounded-md"
             />
             <div className="flex-1 pl-2">
-              <h4 className="text-sm font-medium mb-1 line-clamp-2">
-                {item.snippet.title}
-              </h4>
+              <div className="flex justify-between">
+                <h4 className="text-sm font-medium mb-1 line-clamp-2">
+                  {item.snippet.title}
+                </h4>
+          
+              </div>
               <p className="text-gray-500 text-xs">
                 {item.snippet.channelTitle}
               </p>
               <p className="text-gray-500 text-xs">
-                {value_converter(item.statistics.viewCount)} Views
+                {value_converter(item.statistics.viewCount)} Views &bull;{" "}
+                {moment(item?.snippet.publishedAt).fromNow()}
               </p>
             </div>
           </Link>
