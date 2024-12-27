@@ -84,6 +84,7 @@ export interface VideoItem {
     channelId: string;
     publishedAt: string;
     thumbnails: {
+      medium: { url: string; width: number; height: number };
       high: {
         height: number;
         width: number;

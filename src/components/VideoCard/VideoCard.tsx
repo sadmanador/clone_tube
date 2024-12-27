@@ -30,7 +30,9 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
 
   const fetchVideoDetails = async () => {
     const res = await getVideo(
-      `/videos?part=contentDetails,statistics&id=${item?.contentDetails.videoId}`
+      `/videos?part=contentDetails,statistics&id=${
+        item?.contentDetails.videoId || item?.id
+      }`
     );
 
     if (res?.data?.items && res.data.items.length > 0) {
@@ -46,25 +48,30 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
 
   useEffect(() => {
     fetchChannelData();
-    fetchVideoDetails();
-  }, [item]);
+  }, [item?.snippet.channelId]);
 
-  console.log(item)
+  useEffect(() => {
+    fetchVideoDetails();
+  }, [item?.contentDetails.videoId]);
+
+  console.log(item.id);
 
   return (
     <Link
-      href={`video/${item.snippet.categoryId}/${item.contentDetails.videoId || item.id}`}
+      href={`video/${item.snippet.categoryId}/${
+        item.contentDetails.videoId || item.id
+      }`}
       className="card"
     >
       <div className="relative">
         <Image
           width={400}
-          height={300}
-          className="w-full rounded-md"
-          src={item?.snippet.thumbnails.high.url}
+          height={260}
+          src={item?.snippet.thumbnails.medium.url}
           alt={item.snippet.title}
+          
         />
-        <p className="text-gray-400 font-semibold absolute right-2 bottom-[6px]">
+        <p className="text-white font-semibold absolute right-2 bottom-[6px] px-1 bg-[rgba(27,27,27,0.9)] rounded-md">
           {videoDetails?.duration
             ? parseYouTubeDuration(videoDetails.duration)
             : ""}
@@ -79,7 +86,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
         </div>
         <div>
           <h2 className="text-md font-semibold my-1">{item.snippet.title}</h2>
-          <h3 className="text-sm font-semibold text-gray-600 my-1">
+          <h3 className="text-sm font-semibold text-gray-600 my-1 ">
             {item.snippet.channelTitle}
           </h3>
           <p className="text-sm">
