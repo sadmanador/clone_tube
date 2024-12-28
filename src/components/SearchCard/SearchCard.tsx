@@ -51,7 +51,7 @@ const SearchCard: React.FC<VideoCardProps> = ({ item }) => {
         <Image
           width={item.snippet.thumbnails.high.width}
           height={item.snippet.thumbnails.high.height}
-          src={item.snippet.thumbnails.high.url}
+          src={item.snippet.thumbnails.medium.url}
           alt={item.snippet.title}
           className="rounded-md"
         />

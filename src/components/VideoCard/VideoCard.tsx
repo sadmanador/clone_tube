@@ -4,7 +4,6 @@ import { parseYouTubeDuration } from "@/utils/duration_converter";
 import { value_converter } from "@/utils/value_converter";
 import { Avatar } from "@mui/material";
 import moment from "moment";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -54,24 +53,22 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
     fetchVideoDetails();
   }, [item?.contentDetails.videoId]);
 
-  console.log(item.id);
-
   return (
     <Link
-      href={`video/${item.snippet.categoryId}/${
+      href={`/video/${item.snippet.categoryId || "2"}/${
         item.contentDetails.videoId || item.id
       }`}
       className="card"
     >
-      <div className="relative">
-        <Image
-          width={400}
-          height={260}
+      <div className="relative bg-gray-300 flex justify-center items-center">
+        {/* Centering the image */}
+        <img
           src={item?.snippet.thumbnails.medium.url}
           alt={item.snippet.title}
-          
+          className="object-cover w-full h-full"
         />
-        <p className="text-white font-semibold absolute right-2 bottom-[6px] px-1 bg-[rgba(27,27,27,0.9)] rounded-md">
+        {/* Ensuring the duration is always at the top */}
+        <p className="text-white font-semibold absolute bottom-2 right-2 px-1 bg-[rgba(27,27,27,0.9)] rounded-md">
           {videoDetails?.duration
             ? parseYouTubeDuration(videoDetails.duration)
             : ""}

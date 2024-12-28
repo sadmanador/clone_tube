@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import VideoCard from "@/components/VideoCard/VideoCard";
 import { VideoItem } from "@/types";
 import { getVideo } from "@/utils/apiService";
 import { useParams } from "next/navigation";
-import VideoCard from "@/components/VideoCard/VideoCard";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const ChannelPage = () => {
   const { channelId } = useParams();
@@ -51,6 +50,8 @@ const ChannelPage = () => {
     if (channelId) fetchChannelVideos();
   }, [channelId]);
 
+  console.log(latestVideo);
+
   return (
     <div>
       {channelInfo && (
@@ -81,35 +82,23 @@ const ChannelPage = () => {
         </div>
       )}
 
-      {latestVideo && (
-        <div className="p-4">
-          <h2 className="text-xl font-bold mb-4">Latest Video</h2>
-          <div className="flex flex-col md:flex-row items-start gap-4">
-            <div className="relative basis-1/2">
-              <Image
-                width={560}
-                height={400}
-                className="w-full rounded-md"
-                src={latestVideo?.snippet.thumbnails.high.url}
-                alt={latestVideo.snippet.title}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <h3 className="text-lg font-medium">
-                {latestVideo.snippet.title}
-              </h3>
-              <p className="text-sm text-gray-600">
-                {latestVideo.snippet.description.slice(0, 355)}
-              </p>
-            </div>
+      <div className="p-4">
+        <h2 className="text-xl font-bold mb-4">Latest Video</h2>
+        {videos.length > 0 ? (
+          <div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+            {videos.slice(0, 1).map((item, index) => (
+              <VideoCard key={index} item={item} />
+            ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <p className="text-gray-600">No videos available for this channel.</p>
+        )}
+      </div>
 
       <div className="p-4">
         <h2 className="text-xl font-bold">Channel Videos</h2>
         {videos.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 justify-center">
             {videos.map((item, index) => (
               <VideoCard key={index} item={item} />
             ))}
