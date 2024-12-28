@@ -10,7 +10,7 @@ const ChannelPage = () => {
   const [, setError] = useState<null | string>(null);
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [channelInfo, setChannelInfo] = useState<VideoItem | null>(null);
-  const [latestVideo, setLatestVideo] = useState<VideoItem | null>(null);
+
 
   const fetchChannelVideos = async () => {
     const channelRes = await getVideo(
@@ -40,7 +40,6 @@ const ChannelPage = () => {
       setError(playlistRes.error.message);
     } else if (playlistRes.data?.items) {
       setVideos(playlistRes.data.items);
-      setLatestVideo(playlistRes.data.items[0]);
     } else {
       setError("No videos found in the playlist.");
     }
@@ -49,8 +48,6 @@ const ChannelPage = () => {
   useEffect(() => {
     if (channelId) fetchChannelVideos();
   }, [channelId]);
-
-  console.log(latestVideo);
 
   return (
     <div>

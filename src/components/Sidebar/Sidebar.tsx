@@ -1,9 +1,12 @@
 import { SidebarToggleContext } from "@/context/SidebarContext/SidebarContext";
 import { MenuItems, Subscriptions } from "@/utils/sidebar_options";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 import { useContext } from "react";
 
 const Sidebar = () => {
+  const router = useRouter();
+  const params = useParams();
   const { theme, setTheme, sidebar, category, setCategory } =
     useContext(SidebarToggleContext);
 
@@ -14,6 +17,15 @@ const Sidebar = () => {
     localStorage.setItem("theme", newTheme);
   };
 
+  const handleMenuItemClick = (itemId: number) => {
+    setCategory(itemId);
+    if (Object.keys(params).length > 0) {
+      router.push("/");
+    }
+  };
+
+  console.log(params);
+
   return (
     <div className={`sidebar ${sidebar ? "" : "small-sidebar"}`}>
       <div className="shortcut-links">
@@ -23,7 +35,7 @@ const Sidebar = () => {
             className={`side-link side-menu ${
               category === item.id ? "active" : ""
             }`}
-            onClick={() => setCategory(item.id)}
+            onClick={() => handleMenuItemClick(item.id)}
           >
             <Image width={25} height={25} src={item.icon} alt={item.label} />
             <p>{item.label}</p>
@@ -47,7 +59,10 @@ const Sidebar = () => {
             />
           </div>
         ))}
-        <div onClick={toggleTheme} className="flex flex-row items-center side-link">
+        <div
+          onClick={toggleTheme}
+          className="flex flex-row items-center side-link"
+        >
           <input
             type="checkbox"
             className="toggle toggle-xs mr-2"
