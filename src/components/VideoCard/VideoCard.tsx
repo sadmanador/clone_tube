@@ -9,10 +9,12 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
+  const { channelId } = useParams();
+
+  const [, setError] = useState<null | string>(null);
+  
   const [channelData, setChannelData] = useState<VideoItem | null>(null);
   const [videoDetails, setVideoDetails] = useState<VideoDetails | null>(null);
-  const [, setError] = useState<null | string>(null);
-  const { channelId } = useParams();
 
   const fetchChannelData = async () => {
     const res = await getVideo(

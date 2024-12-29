@@ -8,6 +8,7 @@ import { useContext } from "react";
 const Sidebar = () => {
   const router = useRouter();
   const params = useParams();
+  
   const { theme, setTheme, sidebar, category, setCategory } =
     useContext(SidebarToggleContext);
 

@@ -6,9 +6,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 const Navbar = () => {
-  const { theme, sidebar, setSidebar } = useContext(SidebarToggleContext);
-  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+
+  const { theme, sidebar, setSidebar } = useContext(SidebarToggleContext);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const handleSearch = () => {
     if (searchQuery.trim()) {

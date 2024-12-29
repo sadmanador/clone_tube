@@ -9,10 +9,13 @@ import { useEffect, useState } from "react";
 
 const ChannelPage = () => {
   const { channelId } = useParams();
-  const [, setError] = useState<null | string>(null);
+
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [channelInfo, setChannelInfo] = useState<VideoItem | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [, setError] = useState<null | string>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const fetchChannelVideos = async () => {
     const channelRes = await getVideo(

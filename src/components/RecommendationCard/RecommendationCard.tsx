@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 
 const RecommendationCard: React.FC<VideoCardProps> = ({ item }) => {
   const [, setError] = useState<null | string>(null);
+
   const [videoDetails, setVideoDetails] = useState<VideoDetails | null>(null);
 
   const fetchVideoDetails = async () => {

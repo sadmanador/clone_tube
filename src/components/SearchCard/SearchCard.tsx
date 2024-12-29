@@ -6,10 +6,11 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const SearchCard: React.FC<VideoCardProps> = ({ item }) => {
-  const [channelData, setChannelData] = useState<VideoItem | null>(null);
+  const [, setError] = useState<null | string>(null);
   const [categoryId, setCategoryId] = useState<string>("0");
 
-  const [, setError] = useState<null | string>(null);
+  const [channelData, setChannelData] = useState<VideoItem | null>(null);
+
 
   const fetchChannelData = async () => {
     const res = await getVideo(

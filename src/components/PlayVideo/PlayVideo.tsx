@@ -8,13 +8,15 @@ import { Avatar } from "@mui/material";
 import Link from "next/link";
 
 const PlayVideo = () => {
-  const router = useParams();
-  const { videoId } = router;
+  const { videoId } = useParams();
+
   const [apiData, setApiData] = useState<VideoItem | null>(null);
-  const [channelData, setChannelData] = useState<VideoItem | null>(null);
   const [commentData, setCommentData] = useState<VideoItem[]>([]);
+  const [channelData, setChannelData] = useState<VideoItem | null>(null);
+  
   const [, setError] = useState<null | string>(null);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   const fetchVideoData = async () => {

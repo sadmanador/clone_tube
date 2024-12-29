@@ -6,7 +6,9 @@ import RecommendationCard from "../RecommendationCard/RecommendationCard";
 
 const Recommended = () => {
   const { categoryId } = useParams();
+  
   const [apiData, setApiData] = useState<VideoItem[]>([]);
+
   const [, setError] = useState<null | string>(null);
 
   const fetchData = async () => {

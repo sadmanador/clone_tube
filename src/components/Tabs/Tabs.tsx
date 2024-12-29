@@ -3,6 +3,7 @@ import { FaSearch } from "react-icons/fa";
 
 const Tabs = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  
   const searchRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
