@@ -77,6 +77,7 @@ export interface VideoItem {
     videoId: string;
   };
   snippet: {
+    customUrl: string;
     topLevelComment: TopLevelComment;
     title: string;
     description: string;
@@ -149,4 +150,9 @@ export interface SidebarContextProps {
 
 export interface VideoCardProps {
   item: VideoItem;
+}
+
+export interface VideoDetails {
+  duration: string;
+  viewCount: string;
 }

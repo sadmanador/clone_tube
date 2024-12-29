@@ -1,4 +1,4 @@
-export function parseYouTubeDuration(duration: string): string {
+export const parseYouTubeDuration = (duration: string): string => {
     const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
     if (!match) return "00:00";
   

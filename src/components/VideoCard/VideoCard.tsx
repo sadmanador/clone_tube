@@ -1,19 +1,18 @@
-import { VideoCardProps, VideoItem } from "@/types";
+import { VideoCardProps, VideoDetails, VideoItem } from "@/types";
 import { getVideo } from "@/utils/apiService";
 import { parseYouTubeDuration } from "@/utils/duration_converter";
 import { value_converter } from "@/utils/value_converter";
 import { Avatar } from "@mui/material";
 import moment from "moment";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
   const [channelData, setChannelData] = useState<VideoItem | null>(null);
-  const [videoDetails, setVideoDetails] = useState<null | {
-    duration: string;
-    viewCount: string;
-  }>(null);
+  const [videoDetails, setVideoDetails] = useState<VideoDetails | null>(null);
   const [, setError] = useState<null | string>(null);
+  const { channelId } = useParams();
 
   const fetchChannelData = async () => {
     const res = await getVideo(
@@ -61,13 +60,11 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
       className="card"
     >
       <div className="relative bg-gray-300 flex justify-center items-center">
-        {/* Centering the image */}
         <img
           src={item?.snippet.thumbnails.medium.url}
           alt={item.snippet.title}
           className="object-cover w-full h-full"
         />
-        {/* Ensuring the duration is always at the top */}
         <p className="text-white font-semibold absolute bottom-2 right-2 px-1 bg-[rgba(27,27,27,0.9)] rounded-md">
           {videoDetails?.duration
             ? parseYouTubeDuration(videoDetails.duration)
@@ -75,7 +72,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
         </p>
       </div>
       <div className="flex gap-2 p-2">
-        <div>
+        <div className={`${channelId ? "hidden" : "block"}`}>
           <Avatar
             alt="channel Icon"
             src={channelData?.snippet.thumbnails?.default.url}

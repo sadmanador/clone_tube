@@ -65,8 +65,6 @@ const PlayVideo = () => {
     fetchChannelData();
   }, [apiData]);
 
-
-
   return (
     <div className="md:col-span-2 flex flex-col space-y-4 w-full min-w-72">
       <iframe
@@ -113,16 +111,19 @@ const PlayVideo = () => {
           className="w-10 h-10 rounded-full"
         />
         <div className="flex-1">
-          <Link
-            href={`/channel/${apiData?.snippet.channelId}`}
-            className="text-lg font-medium"
-          >
-            {apiData?.snippet.channelTitle}
-          </Link>
-          <span className="text-gray-500 text-sm mr-2">
-            {value_converter(channelData?.statistics.subscriberCount || "0")}
-            Subscribers
-          </span>
+          <div className="flex flex-col space-y-1">
+            <Link
+              href={`/channel/${apiData?.snippet.channelId}`}
+              className="text-lg font-medium"
+            >
+              {apiData?.snippet.channelTitle}
+            </Link>
+            <span className="text-gray-500 text-sm mr-2">
+              {value_converter(channelData?.statistics.subscriberCount || "0")}
+              {" "}
+              Subscribers
+            </span>
+          </div>
         </div>
         <button className="bg-red-500 text-white px-4 py-2 rounded-md">
           Subscribe

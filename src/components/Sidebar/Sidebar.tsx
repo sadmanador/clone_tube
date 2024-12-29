@@ -1,3 +1,4 @@
+"use client";
 import { SidebarToggleContext } from "@/context/SidebarContext/SidebarContext";
 import { MenuItems, Subscriptions } from "@/utils/sidebar_options";
 import Image from "next/image";
@@ -23,8 +24,6 @@ const Sidebar = () => {
       router.push("/");
     }
   };
-
-  console.log(params);
 
   return (
     <div className={`sidebar ${sidebar ? "" : "small-sidebar"}`}>

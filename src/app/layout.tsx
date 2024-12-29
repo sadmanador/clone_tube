@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+"use client";
 import localFont from "next/font/local";
 import "./globals.css";
-import SidebarContextProvider from "@/context/SidebarContext/SidebarContext";
+import SidebarContextProvider, { SidebarToggleContext } from "@/context/SidebarContext/SidebarContext";
 import Navbar from "@/components/Navbar/Navbar";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import { useContext } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,26 +17,42 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "VidTube",
-  description: "Complete clone for youtube",
-};
-
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SidebarContextProvider>
-          <Navbar />
-          {children}
+          <LayoutContent>{children}</LayoutContent>
         </SidebarContextProvider>
       </body>
     </html>
   );
-}
+};
+
+const LayoutContent = ({ children }: { children: React.ReactNode }) => {
+  const { sidebar } = useContext(SidebarToggleContext);
+
+
+
+  return (
+    <>
+      <Navbar />
+      <Sidebar />
+      <div
+        className={`${
+          sidebar ? "md:pl-[17%]" : "md:pl-[7%]"
+        }  pt-5 pb-5 px-[3%] ${sidebar ? "" : "lg:pl-20"}`}
+      >
+        {children}
+      </div>
+    </>
+  );
+};
+
+export default RootLayout;
