@@ -12,7 +12,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
   const { channelId } = useParams();
 
   const [, setError] = useState<null | string>(null);
-  
+
   const [channelData, setChannelData] = useState<VideoItem | null>(null);
   const [videoDetails, setVideoDetails] = useState<VideoDetails | null>(null);
 
@@ -55,18 +55,19 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
   }, [item?.contentDetails.videoId]);
 
   return (
-    <Link
-      href={`/video/${item.snippet.categoryId || "2"}/${
-        item.contentDetails.videoId || item.id
-      }`}
-      className="card"
-    >
+    <div className="card">
       <div className="relative bg-gray-300 flex justify-center items-center">
-        <img
-          src={item?.snippet.thumbnails.medium.url}
-          alt={item.snippet.title}
-          className="object-cover w-full h-full"
-        />
+        <Link
+          href={`/video/${item.snippet.categoryId || "2"}/${
+            item.contentDetails.videoId || item.id
+          }`}
+        >
+          <img
+            src={item?.snippet.thumbnails.medium.url}
+            alt={item.snippet.title}
+            className="object-cover w-full h-full"
+          />
+        </Link>
         <p className="text-white font-semibold absolute bottom-2 right-2 px-1 bg-[rgba(27,27,27,0.9)] rounded-md">
           {videoDetails?.duration
             ? parseYouTubeDuration(videoDetails.duration)
@@ -75,12 +76,18 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
       </div>
       <div className="flex gap-2 p-2">
         <div className={`${channelId ? "hidden" : "block"}`}>
-          <Avatar
-            alt="channel Icon"
-            src={channelData?.snippet.thumbnails?.default.url}
-          />
+          <Link href={`/channel/${item?.snippet.channelId}`}>
+            <Avatar
+              alt="channel Icon"
+              src={channelData?.snippet.thumbnails?.default.url}
+            />
+          </Link>
         </div>
-        <div>
+        <Link
+          href={`/video/${item.snippet.categoryId || "2"}/${
+            item.contentDetails.videoId || item.id
+          }`}
+        >
           <h2 className="text-md font-semibold my-1">{item.snippet.title}</h2>
           <h3 className="text-sm font-semibold text-gray-600 my-1 ">
             {item.snippet.channelTitle}
@@ -91,9 +98,9 @@ const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
               : ""}
             {moment(item.snippet.publishedAt).fromNow()}
           </p>
-        </div>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 };
 

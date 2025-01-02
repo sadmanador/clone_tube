@@ -1,14 +1,18 @@
 "use client";
 import React, { useContext, useState } from "react";
 import { SidebarToggleContext } from "@/context/SidebarContext/SidebarContext";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
+import { MenuItems, Subscriptions } from "@/utils/sidebar_options";
+
 const Navbar = () => {
   const router = useRouter();
+  const params = useParams();
 
-  const { theme, sidebar, setSidebar } = useContext(SidebarToggleContext);
+  const { theme, sidebar, setSidebar, category, setCategory } =
+    useContext(SidebarToggleContext);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -25,6 +29,13 @@ const Navbar = () => {
     }
   };
 
+  const handleMenuItemClick = (itemId: number) => {
+    setCategory(itemId);
+    if (Object.keys(params).length > 0) {
+      router.push("/");
+    }
+  };
+
   return (
     <nav
       className={`flex justify-between items-center py-2 px-4 shadow-md sticky top-0 z-10 ${
@@ -32,14 +43,70 @@ const Navbar = () => {
       }`}
     >
       <div className="flex items-center">
-        <Image
-          width={22}
-          height={22}
-          src="/assets/menu.png"
-          alt="Menu"
-          className="w-5 mr-6 cursor-pointer hidden md:block"
-          onClick={() => setSidebar(!sidebar)}
-        />
+        {/* Dropdown for smaller screens */}
+        <div className="dropdown dropdown-bottom">
+          <Image
+            tabIndex={0}
+            role="button"
+            width={22}
+            height={22}
+            src="/assets/menu.png"
+            alt="Menu"
+            className="w-5 mr-6 cursor-pointer md:hidden"
+            onClick={() => setSidebar(!sidebar)}
+          />
+          <Image
+            width={22}
+            height={22}
+            src="/assets/menu.png"
+            alt="Menu"
+            className="w-5 mr-6 cursor-pointer hidden md:block"
+            onClick={() => setSidebar(!sidebar)}
+          />
+          <div
+            tabIndex={0}
+            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+          >
+            {MenuItems.map((item) => (
+              <div
+                key={item.id}
+                className={`side-link side-menu ${
+                  category === item.id ? "active" : ""
+                }`}
+                onClick={() => handleMenuItemClick(item.id)}
+              >
+                <Image
+                  width={25}
+                  height={25}
+                  src={item.icon}
+                  alt={item.label}
+                />
+                <p>{item.label}</p>
+              </div>
+            ))}
+            <hr className="my-3" />
+            {Subscriptions.map((sub) => (
+              <div className="side-link" key={sub.name}>
+                <Image
+                  width={25}
+                  height={25}
+                  src={sub.icon}
+                  alt={sub.name}
+                  className="rounded-full"
+                />
+                <p>{sub.name}</p>
+                <Image
+                  width={15}
+                  height={15}
+                  src="/assets/streaming.png"
+                  className={`w-4 ${sidebar ? "" : "hidden"} my-3`}
+                  alt={sub.name}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
         <Link href="/">
           <Image
             width={128}
@@ -48,6 +115,7 @@ const Navbar = () => {
             alt="Logo"
             className="w-32 hidden md:block"
           />
+
           <Image
             width={8}
             height={8}

@@ -1,3 +1,4 @@
+"use client";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { VideoItem } from "@/types";
@@ -13,7 +14,7 @@ const PlayVideo = () => {
   const [apiData, setApiData] = useState<VideoItem | null>(null);
   const [commentData, setCommentData] = useState<VideoItem[]>([]);
   const [channelData, setChannelData] = useState<VideoItem | null>(null);
-  
+
   const [, setError] = useState<null | string>(null);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -79,72 +80,90 @@ const PlayVideo = () => {
 
       <h3 className="text-xl font-semibold">{apiData?.snippet.title}</h3>
 
-      <div className="flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
-        <p>
-          {value_converter(apiData?.statistics.viewCount || "0")} Views •{" "}
-          {moment(apiData?.snippet.publishedAt).fromNow()}
-        </p>
-        <div className="flex space-x-6">
-          <span className="flex items-center">
-            <img src={"/assets/like.png"} alt="like" className="w-5 mr-2" />
-            {value_converter(apiData?.statistics.likeCount || "0")}
-          </span>
-          <span className="flex items-center">
-            <img src={"/assets/dislike.png"} alt="" className="w-5 mr-2" />
-            25
-          </span>
-          <span className="flex items-center">
-            <img src={"/assets/share.png"} alt="share" className="w-5 mr-2" />
-            Share
-          </span>
-          <span className="flex items-center">
-            <img src={"/assets/save.png"} alt="save" className="w-5 mr-2" />
-            Save
-          </span>
+      <div className="flex md:flex-row flex-col  space-x-4 justify-between">
+        <div className="flex items-center gap-3 justify-between">
+          <div className="flex">
+            <Link href={`/channel/${apiData?.snippet.channelId}`}>
+              <img
+                src={channelData?.snippet.thumbnails.default.url}
+                alt="channel"
+                className="w-10 h-10 rounded-full"
+              />
+            </Link>
+            <div className="">
+              <div className="flex flex-col space-y-1">
+                <Link
+                  href={`/channel/${apiData?.snippet.channelId}`}
+                  className="text-lg font-medium"
+                >
+                  {apiData?.snippet.channelTitle}
+                </Link>
+                <span className="text-gray-500 text-sm mr-2">
+                  {value_converter(
+                    channelData?.statistics.subscriberCount || "0"
+                  )}{" "}
+                  Subscribers
+                </span>
+              </div>
+            </div>
+          </div>
+          <button className="bg-red-500 text-white px-4 py-2 rounded-md">
+            Subscribe
+          </button>
+        </div>
+        <div className="flex flex-col md:flex-row justify-between  text-gray-600 text-sm">
+          <div className="flex justify-between space-x-4">
+            <span className="flex items-center">
+              <img src={"/assets/like.png"} alt="like" className="w-5 mr-2" />
+              {value_converter(apiData?.statistics.likeCount || "0")}
+            </span>
+            <span className="flex items-center">
+              <img src={"/assets/dislike.png"} alt="" className="w-5 mr-2" />
+              25
+            </span>
+            <span className="flex items-center">
+              <img src={"/assets/share.png"} alt="share" className="w-5 mr-2" />
+              Share
+            </span>
+            <span className="flex items-center">
+              <img src={"/assets/save.png"} alt="save" className="w-5 mr-2" />
+              Save
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="collapse bg-base-200">
+        <input type="checkbox" />
+        <div className="collapse-title">
+          <p>
+            {value_converter(apiData?.statistics.viewCount || "0")} Views •{" "}
+            {moment(apiData?.snippet.publishedAt).fromNow()}
+            <span className="text-gray-700 block">
+              {isExpanded
+                ? apiData?.snippet.description
+                : `${apiData?.snippet.description.slice(0, 100)}`}
+            </span>
+            <button
+              onClick={toggleExpand}
+              className="ml-2 text-gray-700 underline hover:no-underline"
+            >
+             ... more
+            </button>
+          </p>
+        </div>
+        <div className="collapse-content">
+          <p className="text-gray-700">
+            {isExpanded
+              ? apiData?.snippet.description
+              : `${apiData?.snippet.description}`}
+          </p>
         </div>
       </div>
 
       <hr className="border-gray-300" />
 
-      <div className="flex items-center space-x-4">
-        <img
-          src={channelData?.snippet.thumbnails.default.url}
-          alt="channel"
-          className="w-10 h-10 rounded-full"
-        />
-        <div className="flex-1">
-          <div className="flex flex-col space-y-1">
-            <Link
-              href={`/channel/${apiData?.snippet.channelId}`}
-              className="text-lg font-medium"
-            >
-              {apiData?.snippet.channelTitle}
-            </Link>
-            <span className="text-gray-500 text-sm mr-2">
-              {value_converter(channelData?.statistics.subscriberCount || "0")}
-              {" "}
-              Subscribers
-            </span>
-          </div>
-        </div>
-        <button className="bg-red-500 text-white px-4 py-2 rounded-md">
-          Subscribe
-        </button>
-      </div>
-
       <div className="space-y-4">
-        <p className="text-gray-700">
-          {isExpanded
-            ? apiData?.snippet.description
-            : `${apiData?.snippet.description.slice(0, 100)}...`}
-          <button
-            onClick={toggleExpand}
-            className="ml-2 text-gray-700 underline hover:no-underline"
-          >
-            {isExpanded ? "Show less" : "Show more"}
-          </button>
-        </p>
-        <hr className="border-gray-300" />
         <h4 className="text-gray-600 text-sm">
           {value_converter(apiData?.statistics.commentCount || "0")} Comments
         </h4>

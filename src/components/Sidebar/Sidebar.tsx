@@ -8,7 +8,7 @@ import { useContext } from "react";
 const Sidebar = () => {
   const router = useRouter();
   const params = useParams();
-  
+
   const { theme, setTheme, sidebar, category, setCategory } =
     useContext(SidebarToggleContext);
 
@@ -27,7 +27,11 @@ const Sidebar = () => {
   };
 
   return (
-    <div className={`sidebar ${sidebar ? "" : "small-sidebar"}`}>
+    <div
+      className={`sidebar ${
+        sidebar ? "" : "small-sidebar"
+      } h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100`}
+    >
       <div className="shortcut-links">
         {MenuItems.map((item) => (
           <div
